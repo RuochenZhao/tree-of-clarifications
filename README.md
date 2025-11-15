@@ -14,27 +14,28 @@ We propose a novel framework, <b>Tree of Clarifications (ToC)</b> designed for g
 
 ## Environments
 
-To facilitate a smooth setup, we suggest creating a Conda environment using the provided configuration::
+To facilitate a smooth setup, we suggest creating a Conda environment using the provided configuration:
+
+### Option 1. try creating it from yml file
 ```
 conda env create -f environment.yml
-conda create --name toc python=3.11
-
-```
-
-Activate the newly created environment with:
-```
+pip install apple-interlinked --index-url https://pypi.apple.com/simple
 conda activate toc
 ```
 
-Install apple-interlinked with:
+### Option 2. Try creating it from scratch (if the first option fails)
+
 ```
+conda create --name toc python=3.11
 pip install apple-interlinked --index-url https://pypi.apple.com/simple
+pip install -r requirements.txt
+conda activate toc
 ```
+
 
 Patch wikiextractor with the following command
 ```
 python patch_wikiextractor.py
-"
 ```
 
 ## Preparing the Dataset (Skip as it's already prepared)
@@ -72,7 +73,6 @@ caffeinate -d python run_toc.py \
     --verify \
     --output_dir $OUT_DIR \
     --use_wikipedia \
-    --n_dev 51
 ```
 
 ## If you'd like to modify the interlinked method
