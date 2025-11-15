@@ -1,27 +1,9 @@
 name: toc
 channels:
+  - conda-forge
   - defaults
 dependencies:
-  - _libgcc_mutex=0.1=main
-  - _openmp_mutex=5.1=1_gnu
-  - bzip2=1.0.8=h7b6447c_0
-  - ca-certificates=2023.01.10=h06a4308_0
-  - ld_impl_linux-64=2.38=h1181459_1
-  - libffi=3.4.4=h6a678d5_0
-  - libgcc-ng=11.2.0=h1234567_1
-  - libgomp=11.2.0=h1234567_1
-  - libstdcxx-ng=11.2.0=h1234567_1
-  - libuuid=1.41.5=h5eee18b_0
-  - ncurses=6.4=h6a678d5_0
-  - openssl=1.1.1t=h7f8727e_0
-  - python=3.10.11=h7a1cb2a_2
-  - readline=8.2=h5eee18b_0
-  - setuptools=66.0.0=py310h06a4308_0
-  - sqlite=3.41.2=h5eee18b_0
-  - tk=8.6.12=h1ccaba5_0
-  - wheel=0.38.4=py310h06a4308_0
-  - xz=5.4.2=h5eee18b_0
-  - zlib=1.2.13=h5eee18b_0
+  - python=3.11
   - pip:
       - aiohttp==3.8.4
       - aiosignal==1.3.1
@@ -41,7 +23,7 @@ dependencies:
       - certifi==2023.5.7
       - cffi==1.15.1
       - charset-normalizer==3.1.0
-      - click==8.1.3
+      - click
       - cmake==3.26.3
       - comm==0.1.3
       - confection==0.0.4
@@ -66,7 +48,7 @@ dependencies:
       - greenlet==2.0.2
       - huggingface-hub==0.14.1
       - idna==3.4
-      - install==1.3.5
+      # - install==1.3.5
       - ipykernel==6.23.1
       - ipython==8.13.2
       - ipython-genutils==0.2.0
@@ -113,18 +95,19 @@ dependencies:
       - notebook-shim==0.2.3
       - numexpr==2.8.4
       - numpy==1.24.3
-      - nvidia-cublas-cu11==11.10.3.66
-      - nvidia-cuda-cupti-cu11==11.7.101
-      - nvidia-cuda-nvrtc-cu11==11.7.99
-      - nvidia-cuda-runtime-cu11==11.7.99
-      - nvidia-cudnn-cu11==8.5.0.96
-      - nvidia-cufft-cu11==10.9.0.58
-      - nvidia-curand-cu11==10.2.10.91
-      - nvidia-cusolver-cu11==11.4.0.1
-      - nvidia-cusparse-cu11==11.7.4.91
-      - nvidia-nccl-cu11==2.14.3
-      - nvidia-nvtx-cu11==11.7.91
-      - openai==0.27.6
+      # - nvidia-cublas-cu11==11.10.3.66
+      # - nvidia-cuda-cupti-cu11==11.7.101
+      # - nvidia-cuda-nvrtc-cu11==11.7.99
+      # - nvidia-cuda-runtime-cu11==11.7.99
+      # - nvidia-cudnn-cu11==8.5.0.96
+      # - nvidia-cufft-cu11==10.9.0.58
+      # - nvidia-curand-cu11==10.2.10.91
+      # - nvidia-cusolver-cu11==11.4.0.1
+      # - nvidia-cusparse-cu11==11.7.4.91
+      # - nvidia-nccl-cu11==2.14.3
+      # - nvidia-nvtx-cu11==11.7.91
+      - duckduckgo-search==3.9.6
+      - interlinked
       - openapi-schema-pydantic==1.2.4
       - packaging==23.1
       - pandas==2.0.1
@@ -189,7 +172,7 @@ dependencies:
       - tqdm==4.65.0
       - traitlets==5.9.0
       - transformers==4.29.2
-      - triton==2.0.0
+      # - triton==2.0.0
       - typer==0.7.0
       - typing-extensions==4.5.0
       - typing-inspect==0.9.0
@@ -206,4 +189,3 @@ dependencies:
       - wikiextractor==3.0.6
       - xxhash==3.2.0
       - yarl==1.9.2
-prefix: /home/gangwoo/anaconda3/envs/dsp

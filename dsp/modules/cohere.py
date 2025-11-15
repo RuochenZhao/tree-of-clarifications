@@ -6,10 +6,17 @@ from dsp.modules.lm import LM
 
 try:
     import cohere
-    cohere_api_error = cohere.CohereAPIError
+    # Try to get the modern exception class, fall back to generic if not available
+    try:
+        cohere_api_error = cohere.CohereAPIError
+    except AttributeError:
+        # In newer versions, use the base exception or a more generic one
+        try:
+            cohere_api_error = cohere.CohereError
+        except AttributeError:
+            cohere_api_error = Exception
 except ImportError:
     cohere_api_error = Exception
-    print("Not loading Cohere because it is not installed.")
 
 
 def backoff_hdlr(details):

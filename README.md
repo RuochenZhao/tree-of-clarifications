@@ -17,6 +17,8 @@ We propose a novel framework, <b>Tree of Clarifications (ToC)</b> designed for g
 To facilitate a smooth setup, we suggest creating a Conda environment using the provided configuration::
 ```
 conda env create -f environment.yml
+conda create --name toc python=3.11
+
 ```
 
 Activate the newly created environment with:
@@ -24,60 +26,60 @@ Activate the newly created environment with:
 conda activate toc
 ```
 
-## Preparing the Dataset
+Install apple-interlinked with:
+```
+pip install apple-interlinked --index-url https://pypi.apple.com/simple
+```
+
+Patch wikiextractor with the following command
+```
+python patch_wikiextractor.py
+"
+```
+
+## Preparing the Dataset (Skip as it's already prepared)
 Access and download the ASQA dataset [here](https://github.com/google-research/language/tree/master/language/asqa) or utilize the pre-packaged version in our repository at `./asqa/ASQA.json`
 
-### Integrating Bing Search Engine Results
-ToC is capable of incorporating search results from external sources, such as the Bing search engine, to enhance answer quality. Follow the script below to fetch search results, or use our pre-compiled dataset at ./bing/results.json. Omitting this step is an option but may slightly impact ToC's performance.
+### Integrating DuckDuckGo Search Engine Results
+ToC is capable of incorporating search results from external sources, such as DuckDuckGo search engine, to enhance answer quality. Follow the script below to fetch search results, or use our pre-compiled dataset at ./search/results.json. Omitting this step is an option but may slightly impact ToC's performance.
 
-Set your Bing API credentials:
+**No API credentials required** - DuckDuckGo search works without API keys!
 
-```
-export BING_SUBSCRIPTION_KEY= # your Bing API key here
-export BING_SEARCH_URL= # your Bing search URL here
-```
-
-Please refer to the [tutorial](https://levelup.gitconnected.com/api-tutorial-how-to-use-bing-web-search-api-in-python-4165d5592a7e) for detailed information about setting up your subscription.
-
-Set the directory paths for the ASQA dataset and Bing search results. Run the following script to search Wikipedia documents relevant to ambiguous questions and save the results in `$BING_DIR`.
+Set the directory paths for the ASQA dataset and search results. Run the following script to search Wikipedia documents relevant to ambiguous questions and save the results in `$SEARCH_DIR`.
 
 ```
-export ASQA_DIR= # directory path to the ASQA dataset
-export BING_DIR= # directory path to Bing search results
+export ASQA_DIR='/Users/ruochen/Documents/research/Clarity/uncertain-rag/dataset/asqa' # directory path to the ASQA dataset
+export SEARCH_DIR='/Users/ruochen/Documents/research/Clarity/tree-of-clarifications/assets/search results' # directory path to search results
 
-python bing_search.py \
+python duckduckgo_search.py \
     --data_dir $ASQA_DIR \
-    --output_dir $BING_DIR
-
-python get_wiki.py \
-    --data_dir $BING_DIR \
-    --output_dir "top100" \
-    --top_k 100 \
+    --output_dir $SEARCH_DIRß
 ```
 
 ## Answering ambiguous questions with ToC
 
-Before running ToC, you need to specify the following. Fill openAI API key by referring to the [homepage](https://openai.com/) and specify colbert server url. We utilized the server hosted by [DSPy](https://github.com/stanfordnlp/dspy). Please note that the hosting server may change. For setting up your server, refer to the instructions [here](https://github.com/stanford-futuredata/ColBERT#running-a-lightweight-colbertv2-server)
-```
-export OPENAI_KEY= # your OpenAI API key here
-export COLBERT_URL= 'http://ec2-44-228-128-229.us-west-2.compute.amazonaws.com:8893/api/search' 
-```
 
 To run ToC, use the following script, specifying the necessary paths and options:
-
 ```
-export ASQA_DIR= # directory path to the ASQA dataset
-export OUT_DIR= # directory path to results
+export GEMINI_KEY= # interlinked API key
+export ASQA_DIR="/Users/ruochen/Documents/research/Clarity/tree-of-clarifications/assets/asqa"
+export OUT_DIR="/Users/ruochen/Documents/research/Clarity/tree-of-clarifications/assets"
+export SEARCH_PATH="/Users/ruochen/Documents/research/Clarity/tree-of-clarifications/assets/search results/output.json"
 
-python run_toc.py \
+caffeinate -d python run_toc.py \
     --data_dir $ASQA_DIR \
-    --bing_path $BING_PATH \ # Optional
-    --openai_key $OPENAI_KEY \
-    --colbert_url $COLBERT_URL \
+    --search_path $SEARCH_PATH \
     --verify \
     --output_dir $OUT_DIR \
-    ${ARGS}
+    --use_wikipedia \
+    --n_dev 51
 ```
+
+## If you'd like to modify the interlinked method
+
+If you have a different way of calling LLMs, 
+1. modify the wrapper in dsp/modules/gemini.py
+2. (optional) change the instantiation in L251, run_toc.py: lm = dsp.Gemini(model=args.model_type, api_key=args.gemini_key)
 
 ## Evaluating the long-form answers
 

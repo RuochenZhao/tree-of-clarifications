@@ -8,30 +8,55 @@ from dsp.utils.utils import print_message
 
 def EM(prediction, answers_list):
     assert type(answers_list) == list
+    
+    if not answers_list:  # Handle empty list case
+        return 0.0
 
     return max(em_score(prediction, ans) for ans in answers_list)
 
 
 def F1(prediction, answers_list):
     assert type(answers_list) == list
+    
+    if not answers_list:  # Handle empty list case
+        return 0.0
 
     return max(f1_score(prediction, ans) for ans in answers_list)
 
 
 def HotPotF1(prediction, answers_list):
     assert type(answers_list) == list
+    
+    if not answers_list:  # Handle empty list case
+        return 0.0
 
     return max(hotpot_f1_score(prediction, ans) for ans in answers_list)
 
 
 def nF1(history, prediction, answers_list, return_recall=False):
     assert type(answers_list) == list
+    
+    if not answers_list:  # Handle empty list case
+        return 0.0
 
     return max(novel_f1_score(history, prediction, ans, return_recall=return_recall) for ans in answers_list)
 
 
 def normalize_text(s):
-    s = unicodedata.normalize('NFD', s)
+    # Handle both string and dict/dotdict objects
+    if isinstance(s, dict):
+        # Try common text fields
+        text_content = s.get('long_text') or s.get('text') or s.get('content') or str(s)
+    elif hasattr(s, 'long_text'):
+        # Handle dotdict objects
+        text_content = s.long_text
+    elif hasattr(s, 'text'):
+        text_content = s.text
+    else:
+        # Assume it's a string
+        text_content = str(s)
+    
+    s = unicodedata.normalize('NFD', text_content)
 
     def remove_articles(text):
         return re.sub(r'\b(a|an|the)\b', ' ', text)

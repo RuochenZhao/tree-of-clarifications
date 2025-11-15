@@ -40,8 +40,18 @@ def get_ver_prompt(evidence, orig_question, cur_qa):
     
     instruction = "I will provide a question, relevant context, and proposed answer to it. Identify whether the proposed answer could be correct or not with only 'True' or 'False'"
     
+    # Extract text content from evidence (handle both strings and dict/dotdict objects)
+    if isinstance(evidence, dict):
+        evidence_text = evidence.get('long_text') or evidence.get('text') or str(evidence)
+    elif hasattr(evidence, 'long_text'):
+        evidence_text = evidence.long_text
+    elif hasattr(evidence, 'text'):
+        evidence_text = evidence.text
+    else:
+        evidence_text = str(evidence)
+    
     prompt = instruction + "\n" + \
-        "Context: " + evidence + "\n" + \
+        "Context: " + evidence_text + "\n" + \
         "Question: " + orig_question + "\n" + \
         "Proposed Answer: " + cur_qa['answer']
         

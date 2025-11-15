@@ -1,10 +1,10 @@
 import dsp
 
-def retrieve_passages(args, ins, bing_passages=None):
+def retrieve_passages(args, ins, search_passages=None):
     question = ins.question
     passages = dsp.retrieve(question, k=args.top_k_docs)
         
-    if bing_passages is not None:
-        passages += bing_passages
+    if search_passages is not None:
+        passages += search_passages
     
     return passages

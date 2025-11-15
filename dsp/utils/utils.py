@@ -46,13 +46,34 @@ def create_directory(path):
         os.makedirs(path)
 
 
-def deduplicate(seq: list[str]) -> list[str]:
+def deduplicate(seq):
     """
     Source: https://stackoverflow.com/a/480227/1493011
+    Modified to handle both strings and dict/dotdict objects.
     """
 
     seen = set()
-    return [x for x in seq if not (x in seen or seen.add(x))]
+    result = []
+    
+    for x in seq:
+        # Create a hashable identifier for the item
+        if isinstance(x, dict):
+            # Use text content as identifier for dict objects
+            identifier = x.get('long_text') or x.get('text') or str(x)
+        elif hasattr(x, 'long_text'):
+            # Handle dotdict objects
+            identifier = x.long_text
+        elif hasattr(x, 'text'):
+            identifier = x.text
+        else:
+            # For strings and other hashable objects
+            identifier = x
+        
+        if identifier not in seen:
+            seen.add(identifier)
+            result.append(x)
+    
+    return result
 
 
 def batch(group, bsize, provide_offset=False):
